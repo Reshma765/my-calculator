@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraCalc Elite</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <script src="https://unpkg.com"></script>
+    <script src="https://jsdelivr.net"></script>
+    <script src="https://cloudflare.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-workspace">
+        <header class="app-header">
+            <div class="brand"><h2>AuraCalc <span class="badge">ELITE</span></h2></div>
+            <nav class="mode-navigation">
+                <button class="nav-tab active" data-mode="scientific"><i data-lucide="atom"></i> Sci</button>
+                <button class="nav-tab" data-mode="programmer"><i data-lucide="binary"></i> Prog</button>
+                <button class="nav-tab" data-mode="converter"><i data-lucide="refresh-cw"></i> Conv</button>
+                <button class="nav-tab" data-mode="graphing"><i data-lucide="line-chart"></i> Graph</button>
+            </nav>
+            <div class="system-controls">
+                <button class="sys-btn" id="voiceToggle"><i data-lucide="volume-2"></i></button>
+                <button class="sys-btn" id="audioFeedbackToggle"><i data-lucide="music"></i></button>
+                <button class="sys-btn" id="themeToggle"><i data-lucide="sun"></i></button>
+            </div>
+        </header>
+
+        <main class="app-main-layout">
+            <section class="calculator-core">
+                <div class="display-panel">
+                    <div class="status-bar"><span id="modeLabel">SCIENTIFIC</span><span id="angleUnit">RAD</span></div>
+                    <div class="expression" id="expressionViewport"></div>
+                    <div class="result">= <span id="mainOutputDisplay">0</span></div>
+                    <div class="util-bar">
+                        <button id="copyResultBtn"><i data-lucide="copy"></i> Copy</button>
+                        <button id="voiceInputBtn"><i data-lucide="mic"></i> Dictate</button>
+                        <button id="toggleAngleBtn">Deg/Rad</button>
+                    </div>
+                </div>
+
+                <div class="pad-wrapper">
+                    <div class="pad-view active" id="viewScientific">
+                        <div class="grid scientific-grid">
+                            <button class="btn ctrl" data-action="mc">MC</button><button class="btn ctrl" data-action="mr">MR</button><button class="btn ctrl" data-action="mplus">M+</button><button class="btn ctrl" data-action="mminus">M-</button><button class="btn act" data-action="clear">C</button><button class="btn act" data-action="backspace">&larr;</button>
+                            <button class="btn fn" data-math="sin">sin</button><button class="btn fn" data-math="cos">cos</button><button class="btn fn" data-math="tan">tan</button><button class="btn fn" data-math="pi">π</button><button class="btn fn" data-math="e">e</button><button class="btn op" data-op="^">xʸ</button>
+                            <button class="btn fn" data-math="sqrt">√</button><button class="btn fn" data-math="ln">ln</button><button class="btn fn" data-math="log">log</button><button class="btn fn" data-math="fact">x!</button><button class="btn fn" data-math="square">x²</button><button class="btn op" data-op="/">÷</button>
+                            <button class="btn num" data-val="7">7</button><button class="btn num" data-val="8">8</button><button class="btn num" data-val="9">9</button><button class="btn op" data-op="*">×</button>
+                            <button class="btn num" data-val="4">4</button><button class="btn num" data-val="5">5</button><button class="btn num" data-val="6">6</button><button class="btn op" data-op="-">−</button>
+                            <button class="btn num" data-val="1">1</button><button class="btn num" data-val="2">2</button><button class="btn num" data-val="3">3</button><button class="btn op" data-op="+">+</button>
+                            <button class="btn num" data-val="0">0</button><button class="btn num" data-val=".">.</button><button class="btn fn" data-math="percent">%</button><button class="btn prime" id="executeCalcBtn">=</button>
+                        </div>
+                    </div>
+
+                    <div class="pad-view" id="viewProgrammer">
+                        <div class="prog-sidebar">
+                            <div class="base active" id="readoutHex" data-base="16">HEX <span>0</span></div>
+                            <div class="base" id="readoutDec" data-base="10">DEC <span>0</span></div>
+                            <div class="base" id="readoutBin" data-base="2">BIN <span>0000</span></div>
+                        </div>
+                        <div class="grid prog-grid">
+                            <button class="btn hex" data-val="A">A</button><button class="btn hex" data-val="B">B</button><button class="btn act" data-action="clear">C</button><button class="btn act" data-action="backspace">&larr;</button>
+                            <button class="btn hex" data-val="C">C</button><button class="btn hex" data-val="D">D</button><button class="btn op" data-op="&">AND</button><button class="btn op" data-op="|">OR</button>
+                            <button class="btn hex" data-val="E">E</button><button class="btn hex" data-val="F">F</button><button class="btn op" data-op="^">XOR</button><button class="btn op" data-op="~">NOT</button>
+                            <button class="btn num" data-val="7">7</button><button class="btn num" data-val="8">8</button><button class="btn num" data-val="9">9</button><button class="btn op" data-op="<<">&lt;&lt;</button>
+                            <button class="btn num" data-val="4">4</button><button class="btn num" data-val="5">5</button><button class="btn num" data-val="6">6</button><button class="btn op" data-op=">>">&gt;&gt;</button>
+                            <button class="btn num" data-val="1">1</button><button class="btn num" data-val="2">2</button><button class="btn num" data-val="3">3</button><button class="btn op" data-op="-">-</button>
+                            <button class="btn num" data-val="0">0</button><button class="btn op" data-op="+">+</button><button class="btn prime programmer-equal">=</button>
+                        </div>
+                    </div>
+
+                    <div class="pad-view" id="viewConverter">
+                        <div class="conv-deck">
+                            <select id="converterTypeSelect" class="p-select">
+                                <option value="currency">Currency (Live)</option>
+                                <option value="length">Length</option>
+                                <option value="mass">Mass</option>
+                            </select>
+                            <div class="dual-axis">
+                                <div class="box"><select id="convertFromSelect" class="p-select"></select><input type="number" id="convertFromInput" class="p-input" value="1"></div>
+                                <div class="box"><select id="convertToSelect" class="p-select"></select><input type="number" id="convertToInput" class="p-input" readonly></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pad-view" id="viewGraphing">
+                        <div class="graph-workspace">
+                            <div class="graph-controls"><input type="text" id="graphExpressionInput" class="p-input" value="x * Math.sin(x)"><button id="plotGraphBtn">Plot</button></div>
+                            <div class="canvas-frame"><canvas id="graphingEngineCanvas"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="sidebar">
+                <div class="side-tabs"><button class="stab active" data-target="historyPane">History</button><button class="stab" data-target="memoryPane">Memory</button></div>
+                <div class="pane active" id="historyPane">
+                    <div class="pane-head"><span>Logs</span><button id="clearHistoryBtn">Clear</button></div>
+                    <div class="stream" id="historyStreamContainer"></div>
+                    <button id="exportPdfBtn" class="btn-pdf">Export PDF</button>
+                </div>
+                <div class="pane" id="memoryPane"><div class="m-card">REG [M]: <span id="sidebarMemoryValue">0</span></div></div>
+            </aside>
+        </main>
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
